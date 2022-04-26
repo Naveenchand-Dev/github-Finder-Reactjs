@@ -44,7 +44,7 @@ export const GithubProvider = ({ children }) => {
     // },
     const { items } = await response.json();
     console.log(items);
-    // setUsers(data);
+    // setUsers(data);s
     // setLoading(false);
     dispath({
       type: "GET_USERS",

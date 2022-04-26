@@ -15,7 +15,7 @@ function UserSearch() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (text === "") {
-      setAlert("Please enter something", "error");
+      setAlert("please enter someting to search", "error");
     } else {
       searchUsers(text);
       setText("");

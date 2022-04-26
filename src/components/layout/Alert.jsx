@@ -25,6 +25,7 @@ function Alert() {
               ></path>
             </svg>
             <strong>{alert?.msg}</strong>
+            <p>{alert?.testMsg}</p>
           </div>
         </div>
       </div>

@@ -9,9 +9,8 @@ export const AlertProvider = ({ children }) => {
   const [state, dispath] = useReducer(AlertReducer, initialState);
 
   const setAlert = (msg, type) => {
-    dispath({ type: "SET_ALERT", payload: { msg, type } });
-
-    setTimeout(() => dispath({ type: "REMOVE_ALERT" }), 3000);
+    dispath({ type: "SET_ALERT", payload: { msg, type}});
+    setTimeout(() => dispath({ type: "REMOVE_ALERT" }), 4000);
   };
 
   return (

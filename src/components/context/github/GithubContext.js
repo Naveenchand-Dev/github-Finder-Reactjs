@@ -12,6 +12,8 @@ export const GithubProvider = ({ children }) => {
 
   const initialState = {
     users: [],
+    user: {},
+    repos: [],
     loading: false,
   };
 
@@ -52,6 +54,47 @@ export const GithubProvider = ({ children }) => {
     });
   };
 
+  // get single user
+  const getUser = async (login) => {
+    setLoading();
+    // const params = new URLSearchParams({ q: text });
+    const response = await fetch(`${GITHUB_URL}/users/${login}`, {});
+    // headers: {
+    //   Authorization: `token ${GITHUB_TOKEN}`,
+    // },
+    if (response.status == 404) {
+      window.location = "/notfound";
+    } else {
+      const data = await response.json();
+      console.log(data);
+
+      dispath({
+        type: "GET_USER",
+        payload: data,
+      });
+    }
+  };
+
+  const getUserRepos = async (login) => {
+    setLoading();
+    // const params = new URLSearchParams({ q: text });
+    const response = await fetch(`${GITHUB_URL}/users/${login}/repos`, {});
+    // headers: {
+    //   Authorization: `token ${GITHUB_TOKEN}`,
+    // },
+    if (response.status == 404) {
+      window.location = "/notfound";
+    } else {
+      const data = await response.json();
+      console.log(data);
+
+      dispath({
+        type: "SET_USER_REPOS",
+        payload: data,
+      });
+    }
+  };
+
   // Set loading true
   const setLoading = () => {
     dispath({
@@ -69,9 +112,13 @@ export const GithubProvider = ({ children }) => {
     <GithubContext.Provider
       value={{
         users: state.users,
+        user: state.user,
         loading: state.loading,
+        repos: state.repos,
         searchUsers,
         clearUsers,
+        getUser,
+        getUserRepos,
       }}
     >
       {children}

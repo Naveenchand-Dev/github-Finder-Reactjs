@@ -17,42 +17,7 @@ export const GithubProvider = ({ children }) => {
     loading: false,
   };
 
-  const [state, dispath] = useReducer(GithubReducer, initialState);
-
-  // // Get initial users (testing purposes)
-  // const fetchUsers = async () => {
-  //   setLoading();
-  //   const response = await fetch(`${GITHUB_URL}/users`, {});
-  //   // headers: {
-  //   //   Authorization: `token ${GITHUB_TOKEN}`,
-  //   // },
-  //   const data = await response.json();
-  //   console.log(data);
-  //   // setUsers(data);
-  //   // setLoading(false);
-  //   dispath({
-  //     type: "GET_USERS",
-  //     payload: data,
-  //   });
-  // };
-
-  // Get initial users (testing purposes)
-  const searchUsers = async (text) => {
-    setLoading();
-    const params = new URLSearchParams({ q: text });
-    const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {});
-    // headers: {
-    //   Authorization: `token ${GITHUB_TOKEN}`,
-    // },
-    const { items } = await response.json();
-    console.log(items);
-    // setUsers(data);s
-    // setLoading(false);
-    dispath({
-      type: "GET_USERS",
-      payload: items,
-    });
-  };
+  const [state, dispatch] = useReducer(GithubReducer, initialState);
 
   // get single user
   const getUser = async (login) => {
@@ -62,13 +27,13 @@ export const GithubProvider = ({ children }) => {
     // headers: {
     //   Authorization: `token ${GITHUB_TOKEN}`,
     // },
-    if (response.status == 404) {
+    if (response.status === 404) {
       window.location = "/notfound";
     } else {
       const data = await response.json();
       console.log(data);
 
-      dispath({
+      dispatch({
         type: "GET_USER",
         payload: data,
       });
@@ -82,13 +47,13 @@ export const GithubProvider = ({ children }) => {
     // headers: {
     //   Authorization: `token ${GITHUB_TOKEN}`,
     // },
-    if (response.status == 404) {
+    if (response.status === 404) {
       window.location = "/notfound";
     } else {
       const data = await response.json();
       console.log(data);
 
-      dispath({
+      dispatch({
         type: "SET_USER_REPOS",
         payload: data,
       });
@@ -97,13 +62,13 @@ export const GithubProvider = ({ children }) => {
 
   // Set loading true
   const setLoading = () => {
-    dispath({
+    dispatch({
       type: "SET_LOADING",
     });
   };
 
   const clearUsers = () => {
-    dispath({
+    dispatch({
       type: "CLEAR_USERS",
     });
   };
@@ -111,11 +76,8 @@ export const GithubProvider = ({ children }) => {
   return (
     <GithubContext.Provider
       value={{
-        users: state.users,
-        user: state.user,
-        loading: state.loading,
-        repos: state.repos,
-        searchUsers,
+        ...state,
+        dispatch,
         clearUsers,
         getUser,
         getUserRepos,
